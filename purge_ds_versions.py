@@ -72,12 +72,12 @@ def get_versions(pid, dsid, fedora_url, fedora_user, fedora_pass, fedora_session
     except Exception as ex:
         logger.error(ex)
 
-# function to pruge all but "versions_to_keep" versions of a given pid and dsid
+# function to purge all but "versions_to_keep" versions of a given pid and dsid
 def purge_versions(pid, dsid, versions_to_keep, fedora_url, fedora_user, fedora_pass, fedora_session, logger):
     versions = get_versions(pid, dsid, fedora_url, fedora_user, fedora_pass, fedora_session, logger)
     number_of_versions = len(versions)
     if (number_of_versions > versions_to_keep):
-        # get date of last version to purge
+        # get date of last version to purge, to be used as "endDT" parameter
         last_version_to_purge_key = list(versions.keys())[versions_to_keep]
         purge_date = versions[last_version_to_purge_key]
         try:
@@ -141,7 +141,7 @@ for dsid in dsids:
 
   LOGGER.info(str(dsidcounter) + "/" + str(number_dsids) + " dsid: " + dsid)
 
-  # get all pids underneath the root that have a ds with the given dsid
+  # get all pids underneath the specified root that have a ds with the given dsid
   pids = get_objects(dsid, root, RISEARCH_URL, FEDORA_USER, FEDORA_PASS, risearch_session, LOGGER)
 
   # for each pid, remove all except the latest "keep" versions of the given dsid
