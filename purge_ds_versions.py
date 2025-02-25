@@ -97,15 +97,9 @@ def purge_versions(pid, dsid, versions_to_keep, fedora_url, fedora_user, fedora_
 # function to query resource index for all objects that have a ds with given dsid, within a given pid as the root
 def get_objects(dsid, root, risearch_url, fedora_user, fedora_pass, risearch_session, logger):
     querystring = 'SELECT DISTINCT ?x WHERE {\
-    {{ ?x  <info:fedora/fedora-system:def/relations-external#isMemberOfCollection>+ <info:fedora/' + root + '> . \
-    ?x <info:fedora/fedora-system:def/relations-external#isConstituentOf> ?y . \
+    ?x <info:fedora/fedora-system:def/relations-external#isMemberOfCollection>+ <info:fedora/' + root + '> . \
     ?x <info:fedora/fedora-system:def/view#disseminates> ?ds . \
-    filter contains(str(?ds),"' + dsid + '") }} \
-    UNION \
-    {{ ?x  <info:fedora/fedora-system:def/relations-external#isMemberOfCollection>+ <info:fedora/' + root + '> . \
-    ?x <info:fedora/fedora-system:def/view#disseminates> ?ds . \
-    filter contains(str(?ds),"' + dsid + '") }} \
-    }'
+    filter contains(str(?ds),"' + dsid + '") }'
 
     query = {
         'query': querystring,
@@ -128,7 +122,7 @@ def get_objects(dsid, root, risearch_url, fedora_user, fedora_pass, risearch_ses
     return result
 
 
-# main function
+# main part
 dsidcounter = 0
 
 number_dsids = len(dsids)
